@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
-import { MainPageComponent } from './main-page/main-page/main-page.component';
-import { ProfilePageComponent } from './profile-page/profile-page/profile-page.component';
-import { RouteBuilderPageComponent } from './route-builder-page/route-builder-page/route-builder-page.component';
+import { MainPageComponent } from './main-page/main-page.component';
 
 export const routes: Routes = [
     {
@@ -11,16 +9,21 @@ export const routes: Routes = [
 
     {
         path: "profile",
-        component: ProfilePageComponent
+        loadComponent: () => import("./profile-page/profile-page.component").then(c => c.ProfilePageComponent)
     },
 
     {
         path: "route-builder",
-        component: RouteBuilderPageComponent
+        loadComponent: () => import("./route-builder-page/route-builder-page.component").then(c => c.RouteBuilderPageComponent)
+    },
+
+    {
+        path: "route-search",
+        loadComponent: () => import("./route-search-page/route-search-page.component").then(c => c.RouteSearchPageComponent)
     },
 
     {
         path: "**",
-        component: MainPageComponent
+        redirectTo: "main"
     }
 ];
