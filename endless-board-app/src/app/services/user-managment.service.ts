@@ -15,11 +15,15 @@ export class UserManagmentService {
     private readonly authService: AuthService
   ) {}
 
-  public login() {
-    this.authService.login("John");
+  public login(userName: string): void {
+    this.authService.login(userName);
   }
 
-  public isLoggedIn() {
+  public isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
+  }
+
+  public register(userName: string): void {
+    this.authService.register(userName);
   }
 }

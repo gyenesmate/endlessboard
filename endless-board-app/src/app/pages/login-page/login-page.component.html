@@ -1,1 +1,15 @@
-<button (click)="loginUser()">Login</button>
+<form [formGroup]="userLoginForm" (submit)="loginUser()">
+    <mat-form-field>
+        <mat-label>User Name</mat-label>
+        <input matInput formControlName="userName" type="text">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="userPassword" type="text">
+    </mat-form-field>
+    <br>
+    <button mat-stroked-button type="submit">
+        Log In
+    </button>
+</form>

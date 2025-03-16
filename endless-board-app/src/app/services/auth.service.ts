@@ -18,4 +18,8 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('authToken');
   }
+
+  register(token: string): void {
+    localStorage.setItem('authToken', token);
+  }
 }

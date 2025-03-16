@@ -1,1 +1,20 @@
-<p>register-page works!</p>
+<form [formGroup]="userRegisterForm" (submit)="registerUser()">
+    <mat-form-field>
+        <mat-label>User Name</mat-label>
+        <input matInput formControlName="userName" type="text">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="userEmail" type="text">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="userPassword" type="text">
+    </mat-form-field>
+    <br>
+    <button mat-stroked-button type="submit">
+        Register
+    </button>
+</form>
