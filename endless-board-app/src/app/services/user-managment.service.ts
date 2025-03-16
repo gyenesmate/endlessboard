@@ -9,7 +9,6 @@ export class UserManagmentService {
   public readonly user: User = {
     userName: "John",
     userEmail: "John@gmail.com",
-    loggedIn: true,
   }
   
   constructor(
