@@ -1,0 +1,14 @@
+.wall-body {
+    background-color: grey;
+    height: 400px;
+    width: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.hold {
+    background-color: black;
+    height: 30px;
+    width: 30px;
+}
