@@ -35,6 +35,8 @@ export class LoginPageComponent {
     if (this.userLoginForm.valid) {
       //console.log(this.userLoginForm.value["userName"]);
       this.userManagment.login(this.userLoginForm.value["userName"]);
+      this.userManagment.indexDBaddUser(this.userLoginForm.value["userName"], "example2@gmail.com");
+      this.userManagment.indexDBfetchUsers();
       this.router.navigateByUrl("/main");
     }
   }
