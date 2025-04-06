@@ -32,11 +32,13 @@ export class RegisterPageComponent {
     })
   }
 
-  public registerUser() {
+  public async registerUser() {
     if (this.userRegisterForm.valid) {
-      //console.log(this.userRegisterForm.value["userName"]);
-      this.userManagment.register(this.userRegisterForm.value["userName"]);
-      this.router.navigateByUrl("/main");
+      if (await this.userManagment.register(this.userRegisterForm.value["userEmail"], this.userRegisterForm.value["userPassword"])) {
+        this.router.navigateByUrl("/main");
+      } else {
+        alert("Something is wrong!");
+      }
     }
   }
 }

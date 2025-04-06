@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { UserManagmentService } from '../../services/user-managment.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -15,6 +16,7 @@ export class NavBarComponent {
 
   constructor (
     private readonly authService: AuthService,
+    private userManagment: UserManagmentService,
   ) {}
 
   public isLoggedIn() {
@@ -26,7 +28,7 @@ export class NavBarComponent {
   }
 
   public logoutUser() {
-    this.authService.logout();
+    this.authService.logoutVerification();
   }
 
   public getAuthToken() {

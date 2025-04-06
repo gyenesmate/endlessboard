@@ -26,18 +26,21 @@ export class LoginPageComponent {
     private readonly router: Router
   ) {
     this.userLoginForm = this.formBuilder.group({
-      userName: ["", Validators.required],
+      userEmail: ["", Validators.required],
       userPassword: ["", Validators.required]
     })
   }
 
-  public loginUser() {
+  public async loginUser() {
     if (this.userLoginForm.valid) {
-      //console.log(this.userLoginForm.value["userName"]);
-      this.userManagment.login(this.userLoginForm.value["userName"]);
-      this.userManagment.indexDBaddUser(this.userLoginForm.value["userName"], "example2@gmail.com");
-      this.userManagment.indexDBfetchUsers();
-      this.router.navigateByUrl("/main");
+      if (await this.userManagment.login(this.userLoginForm.value["userEmail"], this.userLoginForm.value["userPassword"])) {
+        this.router.navigateByUrl("/main");
+      } else {
+        alert("Email or Password is wrong!");
+      }
+      //this.userManagment.indexDBaddUser(this.userLoginForm.value["userName"], "example3@gmail.com");
+      //this.userManagment.indexDBfetchUsers();
+      
     }
   }
 }

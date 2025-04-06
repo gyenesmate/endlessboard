@@ -17,25 +17,44 @@ export class UserManagmentService {
     private indexedDBService: IndexedDBService
   ) {}
 
-  public login(userName: string): void {
-    this.authService.login(userName);
+  public async login(userEmail: string, userPassword: string): Promise<boolean> {
+    if (await this.authService.loginVerification(userEmail, userPassword)) {
+      console.log('Login succesfull');
+      localStorage.setItem('authToken', userEmail);
+      return true;
+    } else {
+      console.log('Login error');
+      return false;
+    }
+    // TODO: here i need to 
+  }
+
+  public async register(userEmail: string, userPassword: string): Promise<boolean> {
+    if (await this.authService.registerVerification(userEmail, userPassword)) {
+      console.log('Register succesfull');
+      localStorage.setItem('authToken', userEmail);
+      return true;
+    } else {
+      console.log('Register error');
+      return false;
+    }
+  }
+
+  public logout(): void {
+    this.authService.logoutVerification();
   }
 
   public isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
   }
 
-  public register(userName: string): void {
-    this.authService.register(userName);
-  }
-
-  indexDBaddUser(name: string, email: string) {
+  indexDBaddUser(name: string, email: string): void {
     this.indexedDBService
       .addUser({ userName: name, userEmail: email })
       .subscribe((id) => console.log('User added with ID:', id));
   }
 
-  indexDBfetchUsers() {
+  indexDBfetchUsers(): void {
     this.indexedDBService.getUsers().subscribe((users) => console.log(users));
   }
 }

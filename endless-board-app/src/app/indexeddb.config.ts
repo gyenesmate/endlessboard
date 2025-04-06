@@ -1,6 +1,6 @@
 import { DBConfig } from 'ngx-indexed-db';
 
-export const dbConfig: DBConfig = {
+export const indexDBConfig: DBConfig = {
   name: 'UserDB',
   version: 1,
   objectStoresMeta: [
