@@ -1,38 +1,57 @@
 import { Injectable } from '@angular/core';
+import { collection, Firestore, addDoc, collectionData, doc, updateDoc, deleteDoc, getDoc, DocumentReference, DocumentData, query, where, getDocs } from '@angular/fire/firestore';
 import { User } from '../shared/user';
 import { AuthService } from './auth.service';
 import { IndexedDBService } from './indexeddb.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserManagmentService {
-  public readonly user: User = {
-    userName: "John",
-    userEmail: "John@gmail.com",
-  }
+  private user?: User;
   
   constructor(
     private readonly authService: AuthService,
-    private indexedDBService: IndexedDBService
+    private indexedDBService: IndexedDBService,
+    private firestore: Firestore
   ) {}
+
+  private loadUserOBJ(id: string, userName: string, userEmail: string) {
+    this.user = {
+      id: id,
+      userName: userName,
+      userEmail: userEmail
+    }
+  }
 
   public async login(userEmail: string, userPassword: string): Promise<boolean> {
     if (await this.authService.loginVerification(userEmail, userPassword)) {
       console.log('Login succesfull');
-      localStorage.setItem('authToken', userEmail);
+
+      this.readUserByEmail(userEmail).then(user => {
+        if (user?.id !== undefined && user?.userName !== undefined && user?.userEmail !== undefined) {
+          this.loadUserOBJ(user?.id, user?.userName, user?.userEmail);
+          localStorage.setItem('authToken', user?.userName);
+        }
+      });
+
       return true;
+
     } else {
       console.log('Login error');
       return false;
     }
-    // TODO: here i need to 
   }
 
-  public async register(userEmail: string, userPassword: string): Promise<boolean> {
+  public async register(userEmail: string, userPassword: string, userName: string): Promise<boolean> {
     if (await this.authService.registerVerification(userEmail, userPassword)) {
       console.log('Register succesfull');
-      localStorage.setItem('authToken', userEmail);
+
+      const docRef = this.createUserInDB(userName, userEmail);
+      this.loadUserOBJ((await docRef).id, userName, userEmail);
+
+      localStorage.setItem('authToken', userName);
       return true;
     } else {
       console.log('Register error');
@@ -48,13 +67,59 @@ export class UserManagmentService {
     return this.authService.isLoggedIn();
   }
 
-  indexDBaddUser(name: string, email: string): void {
+  public indexDBaddUser(name: string, email: string): void {
     this.indexedDBService
       .addUser({ userName: name, userEmail: email })
       .subscribe((id) => console.log('User added with ID:', id));
   }
 
-  indexDBfetchUsers(): void {
+  public indexDBfetchUsers(): void {
     this.indexedDBService.getUsers().subscribe((users) => console.log(users));
+  }
+
+  public async createUserInDB(userName: string, userEmail: string): Promise<DocumentReference> {
+    const usersRef = collection(this.firestore, 'users');
+    const docRef = await addDoc(usersRef, { userName, userEmail });
+    console.log('User added to Firestore');
+    return docRef;
+  }
+
+  public async readUserInDB(docId: string): Promise<DocumentData | null> {
+    const userDoc = doc(this.firestore, `users/${docId}`);
+    const snapshot = await getDoc(userDoc);
+  
+    if (snapshot.exists()) {
+      const data = snapshot.data();
+      return data;
+    } else {
+      console.log('No such user!');
+      return null;
+    }
+  }
+
+  public async readUserByEmail(userEmail: string): Promise<User | null> {
+    const usersRef = collection(this.firestore, 'users');
+    const q = query(usersRef, where('userEmail', '==', userEmail));
+    const querySnapshot = await getDocs(q);
+  
+    if (!querySnapshot.empty) {
+      const doc = querySnapshot.docs[0]; // assuming email is unique
+      return { id: doc.id, ...doc.data() } as User;
+    } else {
+      console.log('No user found with that email.');
+      return null;
+    }
+  }
+
+  public async updateUserInDB(docId: string, newData: { userName?: string; userEmail?: string }): Promise<void> {
+    const userDoc = doc(this.firestore, `users/${docId}`);
+    await updateDoc(userDoc, newData);
+    console.log('User updated');
+  }
+
+  public async deleteUserInDB(docId: string): Promise<void> {
+    const userDoc = doc(this.firestore, `users/${docId}`);
+    await deleteDoc(userDoc);
+    console.log('User deleted');
   }
 }

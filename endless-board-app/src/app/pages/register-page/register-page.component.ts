@@ -34,7 +34,11 @@ export class RegisterPageComponent {
 
   public async registerUser() {
     if (this.userRegisterForm.valid) {
-      if (await this.userManagment.register(this.userRegisterForm.value["userEmail"], this.userRegisterForm.value["userPassword"])) {
+      if (await this.userManagment.register(
+        this.userRegisterForm.value["userEmail"], 
+        this.userRegisterForm.value["userPassword"],
+        this.userRegisterForm.value["userName"]
+      )) {
         this.router.navigateByUrl("/main");
       } else {
         alert("Something is wrong!");

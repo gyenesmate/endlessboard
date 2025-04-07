@@ -8,6 +8,8 @@ import { environment } from './environments/environment';
 import { AngularFireModule } from '@angular/fire/compat'
 import { RouterModule } from '@angular/router';
 import { routes } from './app.routes';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 
 @NgModule({
   imports: [
@@ -16,9 +18,12 @@ import { routes } from './app.routes';
     HttpClientModule,
     NgxIndexedDBModule.forRoot(indexDBConfig),
     RouterModule.forRoot(routes),
-    AngularFireModule.initializeApp(environment.firebase)
+    AngularFireModule.initializeApp(environment.firebase),
   ],
-  providers: [],
+  providers: [
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirestore(() => getFirestore()),
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

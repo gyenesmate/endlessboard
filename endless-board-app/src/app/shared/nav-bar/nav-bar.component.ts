@@ -12,7 +12,6 @@ import { UserManagmentService } from '../../services/user-managment.service';
   styleUrl: './nav-bar.component.scss'
 })
 export class NavBarComponent {
-  public userName = "John";
 
   constructor (
     private readonly authService: AuthService,
@@ -28,7 +27,7 @@ export class NavBarComponent {
   }
 
   public logoutUser() {
-    this.authService.logoutVerification();
+    this.userManagment.logout();
   }
 
   public getAuthToken() {
