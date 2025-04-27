@@ -1,14 +1,11 @@
-.wall-body {
-    background-color: grey;
-    height: 400px;
-    width: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
+:host {
+  display: block;
+  width: 100%;
+  height: inherit;
+  overflow: hidden;
 }
 
-.hold {
-    background-color: black;
-    height: 30px;
-    width: 30px;
+.w-full {
+  width: 100%;
+  height: inherit;
 }

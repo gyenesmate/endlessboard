@@ -1,1 +1,24 @@
-<app-climbing-wall></app-climbing-wall>
+<p>route-builder-page works!</p>
+
+<div class="wall-container">
+    <app-climbing-wall [wall]="wallData" [routeID]="routeID1"></app-climbing-wall>
+</div>
+<div class="toolbar">
+    <button type="submit" (click)="randomRouteBuilder()" style="width: fit-content;">Random Rotation</button>
+    <div class="holdSelection">
+        <form action="/" method="get">
+            <label>Hold State Selection: </label>
+            <input type="radio" id="red" name="selection" value="start-hold">
+            <label for="red">Start hold (red)</label><br>
+            <input type="radio" id="yellow" name="selection" value="hold">
+            <label for="yellow">Hold (yellow)</label><br>
+            <input type="radio" id="green" name="selection" value="end-hold">
+            <label for="green">End hold (green)</label>
+        </form>
+        
+    </div>
+    
+</div>
+
+
+

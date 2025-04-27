@@ -1,0 +1,15 @@
+.wall-container {
+    width: 100%;
+    height: 600px;
+}
+
+.toolbar {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.holdSelection form {
+    display: flex;
+    flex-direction: column;
+}
