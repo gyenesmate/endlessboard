@@ -1,6 +1,7 @@
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 import * as THREE from 'three';
 import { Wall } from '../wall';
+import { Hold } from '../hold';
 
 @Component({
   selector: 'app-climbing-wall',
@@ -12,6 +13,10 @@ export class ClimbingWallComponent implements AfterViewInit, OnDestroy {
   @Input() wall!: Wall;
   @Input() routeID!: string;
 
+  @Output() emitClickedHold = new EventEmitter<THREE.Mesh>();
+
+  private raycaster = new THREE.Raycaster();
+  private mouse = new THREE.Vector2();
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
   private renderer!: THREE.WebGLRenderer;
@@ -19,6 +24,8 @@ export class ClimbingWallComponent implements AfterViewInit, OnDestroy {
 
   private canvasHeight!: number;
   private canvasWidth!: number;
+
+  private meshHolds: THREE.Mesh[] = [];
 
   @ViewChild('container') container!: ElementRef;
   
@@ -90,25 +97,42 @@ export class ClimbingWallComponent implements AfterViewInit, OnDestroy {
   }
 
   private addHold(angle: number, pozX: number, pozY: number, name: string): void {
-    const baseSize = Math.min(this.wall.width, this.wall.height) * 0.04; // 5% of smaller wall side
+    // Drawing the hold base
+    const baseSize = Math.min(this.wall.width, this.wall.height) * 0.04; // Size adjustable with the multiplier at the end
     const shape = new THREE.Shape();
     shape.moveTo(0, baseSize*0.1);
     shape.lineTo(-baseSize, -baseSize);
     shape.lineTo(baseSize, -baseSize);
     shape.lineTo(0, baseSize*0.1);
   
+    // Adding material and mesh to the hold
     const geometry = new THREE.ShapeGeometry(shape);
     geometry.center();
     const material = new THREE.MeshBasicMaterial({ color: 0x964B00 });
     const holdMesh = new THREE.Mesh(geometry, material);
 
+    // Setting the hold position and rotation
     holdMesh.position.set(pozX, pozY, 0);
-
     holdMesh.rotation.z = THREE.MathUtils.degToRad(angle);
-
     holdMesh.name = name;
 
-    this.scene.add(holdMesh);    
+    this.scene.add(holdMesh);  
+    this.meshHolds.push(holdMesh);
+    }
+
+  @HostListener('document:click', ['$event'])
+  onMouseClick(event: MouseEvent): void {
+    const rect = this.renderer.domElement.getBoundingClientRect();
+    this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+    this.raycaster.setFromCamera(this.mouse, this.camera);
+    const intersects = this.raycaster.intersectObjects(this.meshHolds);
+
+    if (intersects.length > 0) {
+      const clickedHold = intersects[0].object as THREE.Mesh;
+      this.emitClickedHold.emit(clickedHold);
+    }
   }
 
   public holdRotation(ID: number, angle: number): void {
@@ -138,5 +162,9 @@ export class ClimbingWallComponent implements AfterViewInit, OnDestroy {
       this.renderer.setSize(width, height);
       console.log(this.getHold(1));
     }
+  }
+
+  public getAllMeshHolds(): THREE.Mesh[] {
+    return this.meshHolds;
   }
 }

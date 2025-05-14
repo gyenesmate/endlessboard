@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserManagmentService {
-  private user?: User;
+  private user!: User;
   
   constructor(
     private readonly authService: AuthService,
@@ -25,14 +25,17 @@ export class UserManagmentService {
     }
   }
 
-  public async login(userEmail: string, userPassword: string): Promise<boolean> {
+  public async login(userEmail: string, userPassword: string): Promise<boolean> {   
     if (await this.authService.loginVerification(userEmail, userPassword)) {
       console.log('Login succesfull');
 
       this.readUserByEmail(userEmail).then(user => {
+        console.log(user);
+        
         if (user?.id !== undefined && user?.userName !== undefined && user?.userEmail !== undefined) {
           this.loadUserOBJ(user?.id, user?.userName, user?.userEmail);
           localStorage.setItem('authToken', user?.userName);
+          localStorage.setItem('userEmail', user?.userEmail);
         }
       });
 
@@ -52,6 +55,7 @@ export class UserManagmentService {
       this.loadUserOBJ((await docRef).id, userName, userEmail);
 
       localStorage.setItem('authToken', userName);
+      localStorage.setItem('userEmail', userEmail);
       return true;
     } else {
       console.log('Register error');
@@ -98,6 +102,8 @@ export class UserManagmentService {
   }
 
   public async readUserByEmail(userEmail: string): Promise<User | null> {
+    console.log("hello");
+    
     const usersRef = collection(this.firestore, 'users');
     const q = query(usersRef, where('userEmail', '==', userEmail));
     const querySnapshot = await getDocs(q);

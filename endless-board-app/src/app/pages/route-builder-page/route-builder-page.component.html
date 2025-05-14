@@ -1,23 +1,44 @@
 <p>route-builder-page works!</p>
 
-<div class="wall-container">
-    <app-climbing-wall [wall]="wallData" [routeID]="routeID1"></app-climbing-wall>
-</div>
-<div class="toolbar">
-    <button type="submit" (click)="randomRouteBuilder()" style="width: fit-content;">Random Rotation</button>
-    <div class="holdSelection">
-        <form action="/" method="get">
-            <label>Hold State Selection: </label>
-            <input type="radio" id="red" name="selection" value="start-hold">
-            <label for="red">Start hold (red)</label><br>
-            <input type="radio" id="yellow" name="selection" value="hold">
-            <label for="yellow">Hold (yellow)</label><br>
-            <input type="radio" id="green" name="selection" value="end-hold">
-            <label for="green">End hold (green)</label>
-        </form>
+<div class="work-space">
+    <div class="wall-container">
+        <app-climbing-wall [wall]="wallData" [routeID]="routeID" (emitClickedHold)="onHoldClicked($event)"></app-climbing-wall>
+    </div>
+    <div class="toolbar">
+        <button type="submit" (click)="randomRouteBuilder()" style="width: fit-content;">Random Rotation</button>
+        <div *ngFor="let state of states">
+            <input type="radio" name="stateSelection" value="{{ state }}" (change)="radioChangeHandler($event)">
+            <i>{{ state }}</i>
+        </div>
+        <div class="slider-container">
+            <label for="angleSlider">Hold Angle: </label><br>
+            <input type="range" id="angleSlider" min="0" max="360" value="0" (input)="sliderChangeHandler($event)">
+            <div id="angleDisplay">{{holdAngleValue}}°</div>
+        </div>
         
     </div>
-    
+    <div class="routeAttributes">
+        <form [formGroup]="routeCreatingForm" (submit)="saveBoulder()">
+            <mat-form-field>
+                <mat-label>Title</mat-label>
+                <input matInput formControlName="routeTitle" type="text">
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+                <mat-label>Description</mat-label>
+                <input matInput formControlName="routeDescription" type="text">
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+                <mat-label>Grade</mat-label>
+                <input matInput formControlName="routeGrade" type="text">
+            </mat-form-field>
+            <br>
+            <button mat-stroked-button type="submit">
+                Save Boulder
+            </button>
+        </form>
+    </div>
 </div>
 
 
