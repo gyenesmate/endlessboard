@@ -28,6 +28,7 @@ export class RouteBuilderPageComponent {
   public readonly routeCreatingForm: FormGroup;
 
   private holdStateDict: Map<string, number>;
+  private holdStateMap: Map<THREE.Mesh, string> = new Map();  
     
   private selectedHold: THREE.Mesh | null = null;
 
@@ -82,122 +83,74 @@ export class RouteBuilderPageComponent {
     }
   }
 
-  // TODO: Adjust the holdStateDict map for storing the hold
-  /* onHoldClicked(hold: THREE.Mesh): void {
-    if (this.selectedState !== undefined) {
-      if (this.selectedState === "start-hold" && this.selectedStart < 2) {
-        (hold.material as THREE.MeshBasicMaterial).color.setHex(0xff0000);
-        this.selectedStart++;
-      } else if (this.selectedState === "hold") {
-        (hold.material as THREE.MeshBasicMaterial).color.setHex(0xFFFF00);
-      } else if (this.selectedState === "end-hold" && this.selectedEnd < 2) {
-        (hold.material as THREE.MeshBasicMaterial).color.setHex(0x00FF00);
-        this.selectedEnd++;
-      } else if (this.selectedState === "default-hold") {
-        if ((hold.material as THREE.MeshBasicMaterial).color.getHex() === this.holdStateDict.get("start-hold")) {
-          this.selectedStart--;
-        } else if ((hold.material as THREE.MeshBasicMaterial).color.getHex() === this.holdStateDict.get("end-hold")) {
-          this.selectedEnd--;
-        }        
-        (hold.material as THREE.MeshBasicMaterial).color.setHex(0x964B00);
-      } else if (this.selectedState === "select-hold") {
-        this.previouslySelectedHold = this.selectedHold;
-        this.selectedHold = hold;
-        
-        if (this.previouslySelectedHold) {
-          (this.previouslySelectedHold.material as THREE.MeshBasicMaterial).color.setHex(0x964B00);
-        }
-        if (this.selectedHold) {
-          (this.selectedHold.material as THREE.MeshBasicMaterial).color.setHex(0x0000FF);
-        }
-      }
-      if (this.selectedState !== "select-hold" && (this.selectedHold.material as THREE.MeshBasicMaterial).color.getHex() === this.holdStateDict.get("select-hold")) {
-        this.previouslySelectedHold = this.selectedHold;
-        (this.previouslySelectedHold.material as THREE.MeshBasicMaterial).color.setHex(0x964B00);
-      }
-    } else {
-      // TODO: alert nothing is selected
-      console.warn("Nothing is selected");
-    }
-  } */
+  private setHoldState(hold: THREE.Mesh, state: string) {  
+    (hold.material as THREE.MeshBasicMaterial).color.setHex(this.holdStateDict.get(state)!);  
+    this.holdStateMap.set(hold, state);  
+  }  
+
+  private getHoldState(hold: THREE.Mesh): string {  
+    return this.holdStateMap.get(hold) || "default-hold";  
+  }  
 
   onHoldClicked(hold: THREE.Mesh): void {  
-  // Helper to get color by state  
-  const colorOfState = (state: string) => this.holdStateDict.get(state)!;  
-  // Helper to set hold mesh color by state  
-  const setHoldColor = (hold: THREE.Mesh, state: string) =>  
-    ((hold.material as THREE.MeshBasicMaterial).color.setHex(colorOfState(state)));  
-
-  // Find hold state based on current color  
-  const getCurrentHoldState = (hold: THREE.Mesh) => {  
-    const colorHex = (hold.material as THREE.MeshBasicMaterial).color.getHex();  
-    for (const [state, hex] of this.holdStateDict) {  
-      if (hex === colorHex) return state;  
+    if (this.selectedState === undefined) {  
+      console.warn("Nothing is selected");  
+      return;  
     }  
-    return "default-hold";  
-  };  
 
-  if (this.selectedState !== undefined) {  
-    const currentState = getCurrentHoldState(hold);  
+    const currentState = this.getHoldState(hold);  
 
-    if (this.selectedState === "start-hold" && this.selectedStart < 2) {  
-      setHoldColor(hold, "start-hold");  
+    if (this.selectedState === "start-hold" && this.selectedStart < 2 && currentState !== "start-hold") {  
+      this.setHoldState(hold, "start-hold");  
       this.selectedStart++;  
     } else if (this.selectedState === "hold") {  
-      setHoldColor(hold, "hold");  
-    } else if (this.selectedState === "end-hold" && this.selectedEnd < 2) {  
-      setHoldColor(hold, "end-hold");  
+      this.setHoldState(hold, "hold");  
+    } else if (this.selectedState === "end-hold" && this.selectedEnd < 2 && currentState !== "end-hold") {  
+      this.setHoldState(hold, "end-hold");  
       this.selectedEnd++;  
     } else if (this.selectedState === "default-hold") {  
-      if (currentState === "start-hold") {  
-        this.selectedStart--;  
-      } else if (currentState === "end-hold") {  
-        this.selectedEnd--;  
-      }  
-      setHoldColor(hold, "default-hold");  
+      if (currentState === "start-hold") this.selectedStart--;  
+      if (currentState === "end-hold") this.selectedEnd--;  
+      this.setHoldState(hold, "default-hold");  
     } else if (this.selectedState === "select-hold") {  
-      // Restore previous hold's color state, if any  
+      // Restore previous selected hold's color from map——not temporary property.  
       if (this.selectedHold && this.selectedHold !== hold) {  
-        const prevState = (this.selectedHold as any).__previousState || "default-hold";  
-        setHoldColor(this.selectedHold, prevState);  
-        delete (this.selectedHold as any).__previousState; // Cleanup  
+        const prevState = this.getHoldState(this.selectedHold);  
+        this.setHoldState(this.selectedHold, prevState === "select-hold"   
+          ? (this.selectedHold as any).__preSelectState || "default-hold"  
+          : prevState  
+        );  
+        delete (this.selectedHold as any).__preSelectState;  
       }  
-      // Store current state before changing color  
-      (hold as any).__previousState = currentState;  
-      setHoldColor(hold, "select-hold");  
-      this.selectedHold = hold; // Update reference to currently selected hold  
+      // Save pre-select state  
+      (hold as any).__preSelectState = currentState;  
+      this.setHoldState(hold, "select-hold");  
+      this.selectedHold = hold;  
     }  
 
-    // Deselect if user changes state and last selected hold was a select-hold (but only do this outside select-hold state)  
+    // Deselect if user leaves select-hold mode  
     if (  
       this.selectedState !== "select-hold" &&  
       this.selectedHold &&  
-      getCurrentHoldState(this.selectedHold) === "select-hold"  
+      this.getHoldState(this.selectedHold) === "select-hold"  
     ) {  
-      const prevState = (this.selectedHold as any).__previousState || "default-hold";  
-      setHoldColor(this.selectedHold, prevState);  
-      delete (this.selectedHold as any).__previousState;  
+      const prevState = (this.selectedHold as any).__preSelectState || "default-hold";  
+      this.setHoldState(this.selectedHold, prevState);  
+      delete (this.selectedHold as any).__preSelectState;  
       this.selectedHold = null;  
     }  
-  } else {  
-    console.warn("Nothing is selected");  
   }  
-}
 
-  radioChangeHandler(event: any) {
-    if (this.selectedHold !== null) {  
-      const colorHex = (this.selectedHold.material as THREE.MeshBasicMaterial).color.getHex();  
-      const selectHoldHex = this.holdStateDict.get("select-hold");  
-      if (colorHex === selectHoldHex) {  
-        // Restore previous state if present, otherwise fallback to default  
-        const prevState = (this.selectedHold as any).__previousState || "default-hold";  
-        (this.selectedHold.material as THREE.MeshBasicMaterial).color.setHex(this.holdStateDict.get(prevState)!);  
-        delete (this.selectedHold as any).__previousState; // Clean up  
-      }  
-    } 
-
-    this.selectedState = event.target.value;
-  }
+  radioChangeHandler(event: any) {  
+    // Deselect previous blue hold and restore *true* state from central Map  
+    if (this.selectedHold && this.getHoldState(this.selectedHold) === "select-hold") {  
+        const prevState = (this.selectedHold as any).__preSelectState || "default-hold";  
+        this.setHoldState(this.selectedHold, prevState);  
+        delete (this.selectedHold as any).__preSelectState;  
+        this.selectedHold = null;  
+    }  
+    this.selectedState = event.target.value;  
+  }  
 
   sliderChangeHandler(event: any) {
     this.holdAngleValue = event.target.value;
@@ -210,15 +163,12 @@ export class RouteBuilderPageComponent {
     if (this.routeCreatingForm.valid) {
       let meshHolds = this.climbingWallComponent.getAllMeshHolds();
 
-      if (this.selectedHold !== null) {  
-        const colorHex = (this.selectedHold.material as THREE.MeshBasicMaterial).color.getHex();  
-        const selectHoldHex = this.holdStateDict.get("select-hold");  
-        if (colorHex === selectHoldHex) {  
-          // Restore previous state if present, otherwise fallback to default  
-          const prevState = (this.selectedHold as any).__previousState || "default-hold";  
-          (this.selectedHold.material as THREE.MeshBasicMaterial).color.setHex(this.holdStateDict.get(prevState)!);  
-          delete (this.selectedHold as any).__previousState; // Clean up  
-        }  
+      // Reset any select-hold visual state just in case  
+      if (this.selectedHold && this.getHoldState(this.selectedHold) === "select-hold") {  
+        const prevState = (this.selectedHold as any).__preSelectState || "default-hold";  
+        this.setHoldState(this.selectedHold, prevState);  
+        delete (this.selectedHold as any).__preSelectState;  
+        this.selectedHold = null;  
       } 
 
       const holdsArray = meshHolds.map(mesh => {  
