@@ -27,7 +27,7 @@ export class RegisterPageComponent {
   ) {
     this.userRegisterForm = this.formBuilder.group({
       userName: ["", Validators.required],
-      userEmail: ["", Validators.required],
+      userEmail: ["", [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@gmail\.com$/)]],
       userPassword: ["", Validators.required]
     })
   }

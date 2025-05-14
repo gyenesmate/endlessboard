@@ -118,7 +118,7 @@ export class ClimbingWallComponent implements AfterViewInit, OnDestroy {
 
     this.scene.add(holdMesh);  
     this.meshHolds.push(holdMesh);
-    }
+  }
 
   @HostListener('document:click', ['$event'])
   onMouseClick(event: MouseEvent): void {

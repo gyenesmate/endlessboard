@@ -26,7 +26,7 @@ export class LoginPageComponent {
     private readonly router: Router
   ) {
     this.userLoginForm = this.formBuilder.group({
-      userEmail: ["", Validators.required],
+      userEmail: ["", [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@gmail\.com$/)]],
       userPassword: ["", Validators.required]
     })
   }

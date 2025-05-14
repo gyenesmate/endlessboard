@@ -101,9 +101,7 @@ export class UserManagmentService {
     }
   }
 
-  public async readUserByEmail(userEmail: string): Promise<User | null> {
-    console.log("hello");
-    
+  public async readUserByEmail(userEmail: string): Promise<User | null> {  
     const usersRef = collection(this.firestore, 'users');
     const q = query(usersRef, where('userEmail', '==', userEmail));
     const querySnapshot = await getDocs(q);
