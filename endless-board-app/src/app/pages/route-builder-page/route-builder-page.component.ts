@@ -185,9 +185,7 @@ export class RouteBuilderPageComponent {
       this.routeManagmentService.createRouteInDB(  
         this.routeCreatingForm.value["routeTitle"],  
         this.routeCreatingForm.value["routeDescription"],  
-        this.routeCreatingForm.value["routeGrade"],  
-        this.wallData.width,  
-        this.wallData.height,  
+        this.routeCreatingForm.value["routeGrade"],   
         holdsArray  
       ).then(routeDocID => {
         if (routeDocID) {

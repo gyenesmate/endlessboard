@@ -1,10 +1,12 @@
-import { User } from "./user";
-import { Wall } from "./wall";
+import { Timestamp } from "@angular/fire/firestore";
+import { Hold } from "./hold";
 
 export interface Route {
-    title: string;
+    createdAt: Timestamp;
+    description: string;
     grade: string;
+    holds: Hold[];
     likes: number;
-    owner: User;
-    wall: Wall;
+    title: string;
+    ownerEmail: string;
 }

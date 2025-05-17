@@ -140,7 +140,7 @@ export class ClimbingWallComponent implements AfterViewInit, OnDestroy {
     if (obj !== undefined) {
       obj.rotation.z = THREE.MathUtils.degToRad(angle);
     }
-  } 
+  }
 
   public getHold(ID: number): any {
     return this.scene.getObjectByName(""+this.routeID+ID);

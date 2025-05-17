@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { User } from '../shared/user';
 import { UserManagmentService } from './user-managment.service';
-import { addDoc, collection, Firestore, getDocs, query, where } from '@angular/fire/firestore';
+import { addDoc, collection, collectionGroup, Firestore, getDocs, query, where } from '@angular/fire/firestore';
+import { Route } from '../shared/route';
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +20,7 @@ export class RouteManagmentService {
   public async createRouteInDB(  
     title: string,  
     description: string,  
-    grade: string,  
-    wallWidth: number,  
-    wallHeight: number,  
+    grade: string,   
     holds: any[] 
   ): Promise<string | null> {  
     if (this.userManagmentService.isLoggedIn()) {  
@@ -46,12 +45,11 @@ export class RouteManagmentService {
           const newRouteDoc = await addDoc(routesRef, {  
             title,  
             description,  
-            grade,  
-            wallWidth,  
-            wallHeight,  
+            grade,    
             likes,  
             createdAt: new Date(),  
-            holds 
+            holds,
+            userEmail,
           });  
 
           console.log("Route successfully added:", newRouteDoc.id);  
@@ -68,4 +66,16 @@ export class RouteManagmentService {
       return null;  
     }  
   }
+
+  public async getAllRoutes(): Promise<Route[]> {  
+    const routes: Route[] = [];  
+    const q = query(collectionGroup(this.firestore, 'routes'));  
+    const querySnapshot = await getDocs(q);  
+    querySnapshot.forEach(docSnap => {  
+      const data = docSnap.data();  
+      // Optionally, validate wall/holds here if you want  
+      routes.push(data as Route);  
+    });  
+    return routes;  
+  }  
 }
