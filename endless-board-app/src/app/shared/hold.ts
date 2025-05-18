@@ -1,5 +1,5 @@
 export interface Hold {
-    id: string;
-    angel: number;
+    posID: number;
+    angle: number;
     state: string;
 }

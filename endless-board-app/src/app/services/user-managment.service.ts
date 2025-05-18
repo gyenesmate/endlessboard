@@ -13,7 +13,6 @@ export class UserManagmentService {
   
   constructor(
     private readonly authService: AuthService,
-    private indexedDBService: IndexedDBService,
     private firestore: Firestore
   ) {}
 
@@ -25,20 +24,18 @@ export class UserManagmentService {
     }
   }
 
+  /* Auth functionality */
   public async login(userEmail: string, userPassword: string): Promise<boolean> {   
     if (await this.authService.loginVerification(userEmail, userPassword)) {
       console.log('Login succesfull');
 
-      this.readUserByEmail(userEmail).then(user => {
-        console.log(user);
-        
+      this.readUserByEmail(userEmail).then(user => {      
         if (user?.id !== undefined && user?.userName !== undefined && user?.userEmail !== undefined) {
           this.loadUserOBJ(user?.id, user?.userName, user?.userEmail);
           localStorage.setItem('authToken', user?.userName);
           localStorage.setItem('userEmail', user?.userEmail);
         }
       });
-
       return true;
 
     } else {
@@ -71,16 +68,7 @@ export class UserManagmentService {
     return this.authService.isLoggedIn();
   }
 
-  public indexDBaddUser(name: string, email: string): void {
-    this.indexedDBService
-      .addUser({ userName: name, userEmail: email })
-      .subscribe((id) => console.log('User added with ID:', id));
-  }
-
-  public indexDBfetchUsers(): void {
-    this.indexedDBService.getUsers().subscribe((users) => console.log(users));
-  }
-
+  /* Firestore Database functionality */
   public async createUserInDB(userName: string, userEmail: string): Promise<DocumentReference> {
     const usersRef = collection(this.firestore, 'users');
     const docRef = await addDoc(usersRef, { userName, userEmail });
@@ -88,7 +76,7 @@ export class UserManagmentService {
     return docRef;
   }
 
-  public async readUserInDB(docId: string): Promise<DocumentData | null> {
+  public async readUserInDB(docId: string): Promise<DocumentData|null> {
     const userDoc = doc(this.firestore, `users/${docId}`);
     const snapshot = await getDoc(userDoc);
   
@@ -101,13 +89,28 @@ export class UserManagmentService {
     }
   }
 
-  public async readUserByEmail(userEmail: string): Promise<User | null> {  
+  public async readUserNameByEmail(userEmail: string): Promise<string | null> {  
+    const usersRef = collection(this.firestore, 'users');
+    const q = query(usersRef, where('userEmail', '==', userEmail));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const doc = querySnapshot.docs[0];
+      const data = doc.data() as { userName?: string };
+      return data.userName || null;
+    } else {
+      console.log('No user found with that email.');
+      return null;
+    }
+  }
+
+  public async readUserByEmail(userEmail: string): Promise<User|null> {  
     const usersRef = collection(this.firestore, 'users');
     const q = query(usersRef, where('userEmail', '==', userEmail));
     const querySnapshot = await getDocs(q);
   
     if (!querySnapshot.empty) {
-      const doc = querySnapshot.docs[0]; // assuming email is unique
+      const doc = querySnapshot.docs[0];
       return { id: doc.id, ...doc.data() } as User;
     } else {
       console.log('No user found with that email.');
@@ -115,15 +118,34 @@ export class UserManagmentService {
     }
   }
 
-  public async updateUserInDB(docId: string, newData: { userName?: string; userEmail?: string }): Promise<void> {
-    const userDoc = doc(this.firestore, `users/${docId}`);
-    await updateDoc(userDoc, newData);
-    console.log('User updated');
+  public async updateUserNameByEmail(userEmail: string, newUserName: string): Promise<void> {
+    const usersRef = collection(this.firestore, 'users');
+    const q = query(usersRef, where('userEmail', '==', userEmail));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      console.error('No user found with that email');
+      return;
+    }
+
+    const userDocRef = querySnapshot.docs[0].ref;
+    await updateDoc(userDocRef, { userName: newUserName });
+    console.log('User name updated');
   }
 
   public async deleteUserInDB(docId: string): Promise<void> {
     const userDoc = doc(this.firestore, `users/${docId}`);
     await deleteDoc(userDoc);
     console.log('User deleted');
+  }
+
+  public async getUserDocIdByEmail(userEmail: string): Promise<string|null> {
+    const usersRef = collection(this.firestore, 'users');
+    const q = query(usersRef, where('userEmail', '==', userEmail));
+    const userDocs = await getDocs(q);
+    if (!userDocs.empty) {
+      return userDocs.docs[0].id;
+    }
+    return null;
   }
 }

@@ -1,15 +1,14 @@
 import { DBConfig } from 'ngx-indexed-db';
 
 export const indexDBConfig: DBConfig = {
-  name: 'UserDB',
+  name: 'RouteLikeDB',
   version: 1,
   objectStoresMeta: [
     {
-      store: 'users',
+      store: 'routeLikes',
       storeConfig: { keyPath: 'id', autoIncrement: true },
       storeSchema: [
-        { name: 'userName', keypath: 'userName', options: { unique: false } },
-        { name: 'userEmail', keypath: 'userEmail', options: { unique: true } },
+        { name: 'routeID', keypath: 'routeID', options: { unique: true } },
       ],
     },
   ],

@@ -40,8 +40,8 @@ export class RouteBuilderPageComponent {
   public holdAngleValue: number;
 
   public wallData: Wall = {
-      width: 40,
-      height: 50,
+      width: 50,
+      height: 60,
   };
 
   constructor(
@@ -49,6 +49,7 @@ export class RouteBuilderPageComponent {
     private routeManagmentService: RouteManagmentService,
     private readonly router: Router
   ) {
+
     this.holdStateDict = new Map ([
       ["start-hold", 0xff0000],
       ["hold", 0xFFFF00],
@@ -77,7 +78,7 @@ export class RouteBuilderPageComponent {
     let holdIDs = 0;
     if (this.climbingWallComponent) {
       for (let i = 0; i <= 48; i++) {
-        this.climbingWallComponent.holdRotation(i, Math.floor(Math.random() * (360 - 0 + 1) + 0));
+        this.climbingWallComponent.setHoldRotation(i, Math.floor(Math.random() * (360 - 0 + 1) + 0));
         holdIDs++;
       }
     }

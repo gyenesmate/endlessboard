@@ -1,0 +1,181 @@
+h1 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 2.5rem 0 2rem 0;
+    color: #2d384b;
+    letter-spacing: 0.035em;
+}
+
+.userData {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+
+    h4 {
+        margin: 0 0.6rem 0 0;
+        font-size: 1.13rem;
+        color: #294686;
+    }
+
+    input[type="text"] {
+        font-size: 1.05rem;
+        border-radius: 8px;
+        border: 1.5px solid #c3cbe0;
+        background: #f5f8fc;
+        padding: 0.52em 1em;
+        transition: border-color 0.16s;
+        min-width: 160px;
+
+        &:focus {
+            border-color: #294686;
+            background: #fff;
+            outline: none;
+        }
+    }
+
+    button {
+        font-size: 1rem;
+        font-weight: 600;
+        border: 1.7px solid #197749;
+        color: #197749;
+        border-radius: 7px;
+        background: #f5fcf7;
+        padding: 0.49em 1.2em;
+        cursor: pointer;
+        transition: background 0.14s, color 0.14s;
+        margin-left: 0.4rem;
+
+        &:hover:enabled,
+        &:focus:enabled {
+            background: #197749;
+            color: #fff;
+        }
+
+        &:disabled {
+            opacity: 0.6;
+            background: #eef4f0;
+            color: #7e8e82;
+            cursor: not-allowed;
+        }
+    }
+}
+
+.userRoutes {
+    max-width: 780px;
+    margin: 0 auto 3rem auto;
+    padding: 0 1.1rem;
+
+    h4 {
+        color: #294686;
+        margin-bottom: 0.8rem;
+    }
+
+    .noRoutes {
+        text-align: center;
+        color: #868899;
+        opacity: 0.87;
+        font-size: 1.1rem;
+        margin-top: 1.5rem;
+    }
+}
+
+.userRoutes>div[ngfor],
+/* fallback for angular generated divs */
+.userRoutes>div {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 8px 32px rgba(60, 72, 83, 0.09), 0 1.5px 6px rgba(32, 35, 39, 0.02);
+    margin-bottom: 2.2rem;
+    padding: 1.5rem 2.1rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+
+    p {
+        margin: 0 0 0.3rem 0;
+        font-size: 1.13rem;
+        font-weight: 500;
+        color: #294686;
+        word-break: break-word;
+    }
+
+    button {
+        align-self: flex-start;
+        margin-bottom: .7rem;
+        padding: 0.5em 1em;
+        font-size: 0.98rem;
+        font-weight: 600;
+        border-radius: 6px;
+        border: 1.7px solid #be2411;
+        color: #be2411;
+        background: #fff4f3;
+        cursor: pointer;
+        transition: background 0.15s, color 0.14s;
+
+        &:hover,
+        &:focus {
+            background: #be2411;
+            color: #fff;
+        }
+    }
+
+    .climbing-wall-container {
+        margin-top: .7rem;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #eff3fa;
+        box-shadow: 0 0.5px 10px rgba(40, 87, 198, 0.04);
+        width: 100%;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Responsive */
+@media (max-width: 780px) {
+    .userRoutes {
+        max-width: 100%;
+        padding: 0 0.5rem;
+    }
+
+    .userRoutes>div,
+    .userRoutes>div[ngfor] {
+        padding: 1.2rem 0.7rem;
+    }
+}
+
+@media (max-width: 560px) {
+    h1 {
+        font-size: 1.27rem;
+        margin: 1.2rem 0 0.8rem 0;
+    }
+
+    .userData {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.8rem;
+        margin-bottom: 1.3rem;
+
+        h4 {
+            margin: 0 0 0.35rem 0;
+        }
+
+        input[type="text"] {
+            min-width: 0;
+            font-size: 0.98rem;
+            padding: 0.39em 0.6em;
+        }
+
+        button {
+            font-size: 0.98rem;
+            padding: 0.43em 1em;
+            margin-left: 0;
+        }
+    }
+}

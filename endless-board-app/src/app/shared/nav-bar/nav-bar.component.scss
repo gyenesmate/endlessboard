@@ -1,0 +1,143 @@
+@use 'sass:color';
+
+// === Color Variables ===
+$primary: #294686;
+$primary-light: #f3f5fd;
+$active-bg: #d3e1fd;
+$active-text: $primary;
+$text-main: #2d384b;
+$navbar-bg: #f7f9fc;
+$logout-color: #be2411;
+$logout-bg: #ffebeb;
+$navbar-text-bg: #e7ebf7;
+
+// === Mixins ===
+@mixin nav-item-style($color, $active-bg, $active-color) {
+    color: $color;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 7px;
+    padding: 0.48em 1.03em;
+    transition: background 0.17s, color 0.17s, box-shadow 0.15s;
+    text-decoration: none;
+
+    &.active,
+    &:hover,
+    &:focus-visible {
+        background: $active-bg;
+        color: $active-color !important;
+        text-decoration: none;
+    }
+}
+
+// === Navbar Styles ===
+.navbar {
+    background: $navbar-bg !important;
+    box-shadow: 0 1.5px 16px rgba(41, 70, 134, 0.07);
+
+    .container-fluid {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 0 2.3rem;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .navbar-brand {
+        color: $primary;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        font-size: 1.33rem;
+        padding-right: 2rem;
+        transition: color 0.17s;
+
+        &:hover,
+        &:focus {
+            color: color.adjust($primary, $lightness: -12%);
+            text-decoration: none;
+        }
+    }
+
+    .navbar-center {
+        flex-grow: 1;
+        display: flex !important;
+        justify-content: center !important;
+    }
+
+    .navbar-nav {
+        align-items: center;
+        gap: 0.8rem;
+
+        .nav-item {
+            margin-right: 0.5rem;
+
+            .nav-link {
+                @include nav-item-style($text-main, $active-bg, $active-text);
+
+                &.logout {
+                    color: $logout-color;
+                    border: 1.2px solid $logout-color;
+                    background: $logout-bg;
+
+                    &:hover,
+                    &.active {
+                        background: $logout-color;
+                        color: #fff !important;
+                    }
+                }
+            }
+        }
+    }
+
+    .navbar-text {
+        margin-left: 2rem;
+        font-size: 1.02rem;
+        color: $primary;
+        font-weight: 600;
+        background: $navbar-text-bg;
+        border-radius: 7px;
+        padding: 0.42em 1em;
+        letter-spacing: 0.01em;
+        transition: background 0.15s, color 0.15s;
+        display: inline-block;
+        white-space: nowrap;
+    }
+}
+
+// Centering Nav Items When Logged Out
+.center-navbar-nav {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100%;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+@media (max-width: 991.98px) {
+    .navbar-collapse>.w-100 {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+
+    .navbar-nav {
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100%;
+    }
+
+    .navbar-text {
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+        margin: 1rem 0 0 0;
+        display: block;
+    }
+
+    .center-navbar-nav {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        width: 100%;
+        justify-content: center !important;
+    }
+}

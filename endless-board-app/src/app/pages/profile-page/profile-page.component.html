@@ -1,1 +1,30 @@
-<p>profile-page works!</p>
+<h1>Profile</h1>
+<div class="userData">
+    <h4>User Name:</h4>
+    <input type="text" #userNameInput value="{{ userName }}">
+    <button 
+        (click)="userNameChange(userNameInput.value)"
+        [disabled]="userNameInput.value === userName">
+        Change
+    </button>
+</div>
+<div class="userRoutes">
+    <h4>Own Routes:</h4>
+    <ng-container *ngIf="routes$ | async as routes">      
+        <ng-container *ngIf="routes.length > 0; else noRoutes">
+            <div *ngFor="let r of routes; trackBy: trackById">
+                <p>{{ r.title }}</p>
+                <button (click)="deleteRoute(r.id)">
+                    Delete
+                </button>
+                <div class="climbing-wall-container" style="width: 100%; height: 400px;">
+                    <app-climbing-wall [wall]="wallData" #climbingWall
+                        (wallLoaded)="onClimbingWallLoaded(r, climbingWall)" [routeID]="r.id"></app-climbing-wall>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #noRoutes>
+            <div>No routes found.</div>
+        </ng-template>
+    </ng-container>
+</div>

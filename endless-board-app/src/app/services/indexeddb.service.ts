@@ -6,21 +6,35 @@ import { map, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class IndexedDBService {
-  constructor(private dbService: NgxIndexedDBService) {}
+  
+  private storeName: string = 'routeLikes';
 
-  addUser(user: { userName: string; userEmail: string }): Observable<number> {
-    return this.dbService.add('users', user).pipe(
-      map((record) => record.id) // Extract only the ID
-    );
+  constructor(
+    private dbService: NgxIndexedDBService
+  ) {}
+
+  // Create: Adds a new route like
+  addRouteLike(routeLike: { routeID: string }): Observable<any> {
+    return this.dbService.add(this.storeName, routeLike);
   }
 
-  getUsers(): Observable<any[]> {
-    return this.dbService.getAll('users');
+  // Read: Get all route likes
+  getAllRouteLikes(): Observable<any> {
+    return this.dbService.getAll(this.storeName);
   }
 
-  deleteUser(id: number): Observable<boolean> {
-    return this.dbService.delete('users', id).pipe(
-      map((result) => result.length === 0) // If deletion is successful, result should be an empty array
-    );
+  // Read: Get a route like by routeID
+  getRouteLikeByRouteID(routeID: string): Observable<any> {
+    return this.dbService.getByIndex(this.storeName, 'routeID', routeID);
+  }
+
+  // Update: Update routeID by id
+  updateRouteLike(id: number, routeID: string): Observable<any> {
+    return this.dbService.update(this.storeName, { id, routeID });
+  }
+
+  // Delete: Delete by id
+  deleteRouteLike(id: number): Observable<any> {
+    return this.dbService.delete(this.storeName, id);
   }
 }

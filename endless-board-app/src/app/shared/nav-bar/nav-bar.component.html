@@ -1,38 +1,63 @@
 <nav class="navbar navbar-expand-lg bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/main">EndlessBoard</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" aria-current="page" routerLink="/main">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" routerLink="/route-search">Route Search</a>
-          </li>
-          @if( isLoggedIn() ) {
+  <div class="container-fluid">
+    <!-- Left: Brand + toggler always visible -->
+    <a class="navbar-brand mb-0 h1" routerLink="/main">EndlessBoard</a>
+    <button 
+      class="navbar-toggler" 
+      type="button" 
+      data-bs-toggle="collapse" 
+      data-bs-target="#mainNavContent"
+      aria-controls="mainNavContent" 
+      aria-expanded="false" 
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <!-- Collapsible content (ALL center/right navs go here) -->
+    <div class="collapse navbar-collapse" id="mainNavContent">
+      <div class="w-100 d-lg-flex align-items-center justify-content-between">
+        
+        <!-- Center: Nav links -->
+        <div class="d-flex justify-content-center flex-grow-1 order-2 order-lg-2">
+          <ul class="navbar-nav mb-2 mb-lg-0" [class.center-navbar-nav]="!isLoggedIn()">
             <li class="nav-item">
-              <a class="nav-link" routerLinkActive="active" routerLink="/route-builder">Route Builder</a>
+              <a class="nav-link" routerLinkActive="active" routerLink="/main">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLinkActive="active" routerLink="/route-search">Search</a>
+            </li>
+            @if(isLoggedIn()) {
+            <li class="nav-item">
+              <a class="nav-link" routerLinkActive="active" routerLink="/route-builder">Builder</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" routerLinkActive="active" routerLink="/profile">Profile</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" routerLinkActive="active" routerLink="/main" (click)="logoutUser()">Log Out</a>
+              <a class="nav-link logout" routerLinkActive="active" routerLink="/logout" (click)="logoutUser()">
+                <i class="fas fa-sign-out-alt" style="margin-right:6px;"></i> Log Out
+              </a>
             </li>
-            <span class="navbar-text">User Name: {{ getAuthToken() }}</span>
-          } @else {
+            } @else {
             <li class="nav-item">
               <a class="nav-link" routerLinkActive="active" routerLink="/login">Login</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" routerLinkActive="active" routerLink="/register">Register</a>
             </li>
+            }
+          </ul>
+        </div>
+        
+        <!-- Right: User info -->
+        <div
+          class="order-3 order-lg-3 d-flex align-items-center justify-content-lg-end justify-content-center mt-2 mt-lg-0"
+          style="min-width:180px;">
+          @if(isLoggedIn()) {
+            <span class="navbar-text">User Name: {{ getAuthToken() }}</span>
           }
-          
-        </ul>
+        </div>
       </div>
     </div>
-  </nav>
+  </div>
+</nav>

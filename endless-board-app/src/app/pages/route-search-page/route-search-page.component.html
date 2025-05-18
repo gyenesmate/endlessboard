@@ -1,5 +1,33 @@
-<p>route-search-page works!</p>
-<div class="holder" style="width: 100%; height: 400px;">
-    <app-climbing-wall [wall]="wallData"></app-climbing-wall>
-    <input type="button" value="click" (click)="printRouteOBJ()">
+<h1>Route Search</h1>
+<div class="route-search-bar">
+    <input [formControl]="titleFilter" type="text" placeholder="Search by title...">
+    <input [formControl]="gradeFilter" type="text" placeholder="Search by grade...">
+</div>
+
+<div class="holder">
+    <ng-container *ngIf="filteredRoutes$ | async as routes">
+        <ng-container *ngIf="routes.length > 0; else noRoutes">
+            <div class="route-card" *ngFor="let r of routes; trackBy: trackById">
+                <p>{{ r.title }}</p>
+                <p>{{ r.description }}</p>
+                <p>{{ r.userEmail }}</p>
+                <p>Route Likes: {{ r.likes }}</p>
+                <ng-container *ngIf="userEmail !== null; else notLoggedIn">
+                    <button (click)="toggleLikeRoute(r)" [disabled]="r.userEmail === userEmail">
+                        {{ isLikedByMe(r) ? 'Unlike' : 'Like' }}
+                    </button>
+                </ng-container>
+                <ng-template #notLoggedIn>
+                    <div>*To like routes log in or register</div>
+                </ng-template>
+                <div class="climbing-wall-container" style="width: 100%; height: 400px;">
+                    <app-climbing-wall [wall]="wallData" #climbingWall
+                        (wallLoaded)="onClimbingWallLoaded(r, climbingWall)" [routeID]="r.id"></app-climbing-wall>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #noRoutes>
+            <div>No routes found.</div>
+        </ng-template>
+    </ng-container>
 </div>

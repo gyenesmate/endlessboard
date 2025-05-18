@@ -12,8 +12,10 @@ import { Hold } from '../hold';
 export class ClimbingWallComponent implements AfterViewInit, OnDestroy {
   @Input() wall!: Wall;
   @Input() routeID!: string;
+  @Input() holds: Hold[] = [];
 
   @Output() emitClickedHold = new EventEmitter<THREE.Mesh>();
+  @Output() wallLoaded = new EventEmitter<void>();
 
   private raycaster = new THREE.Raycaster();
   private mouse = new THREE.Vector2();
@@ -37,6 +39,7 @@ export class ClimbingWallComponent implements AfterViewInit, OnDestroy {
     this.initThree();
     this.animate();
     window.addEventListener("resize", this.onResize);
+    this.wallLoaded.emit();
   }
 
   ngOnDestroy(): void {
@@ -135,15 +138,23 @@ export class ClimbingWallComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public holdRotation(ID: number, angle: number): void {
+  public setHoldRotation(ID: number, angle: number): void {
     let obj = this.scene.getObjectByName(""+this.routeID+ID);
     if (obj !== undefined) {
       obj.rotation.z = THREE.MathUtils.degToRad(angle);
     }
   }
 
-  public getHold(ID: number): any {
-    return this.scene.getObjectByName(""+this.routeID+ID);
+  public setHoldState(ID: number, color: number): void {
+    let holdID = ""+this.routeID+ID;
+    let foundMesh = this.meshHolds.find(mesh => mesh.name === holdID);
+
+    if (foundMesh) {
+      (foundMesh.material as THREE.MeshBasicMaterial).color.setHex(color);
+    } else {
+      console.warn("Hold not found ID: " + ID);
+    }
+
   }
 
   private animate = (): void => {
@@ -160,7 +171,6 @@ export class ClimbingWallComponent implements AfterViewInit, OnDestroy {
       this.camera.updateProjectionMatrix();
 
       this.renderer.setSize(width, height);
-      console.log(this.getHold(1));
     }
   }
 

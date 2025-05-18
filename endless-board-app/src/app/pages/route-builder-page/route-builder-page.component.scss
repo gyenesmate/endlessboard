@@ -1,16 +1,192 @@
+h1 {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 2rem 0 2rem;
+    color: #2d384b;
+    letter-spacing: .03em;
+}
+
 .work-space {
     display: flex;
-    flex-direction: row;
-    width: 100%;
+    gap: 2.5rem;
+    justify-content: center;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto 4rem auto;
+    padding: 0 1.3rem;
+    flex-wrap: wrap;
 }
 
 .wall-container {
+    flex: 1 1 420px;
+    background: #f4f8fb;
+    border-radius: 16px;
+    box-shadow: 0 4px 22px rgba(70, 100, 186, 0.10);
+    min-width: 320px;
+    max-width: 540px;
+    /* Add this: */
+    height: 500px;
     width: 100%;
-    height: 600px;
+    overflow: hidden;
+
+    display: flex;
+    /* Optionally center content */
+    align-items: center;
+    /* Vertically centers <app-climbing-wall> */
+    justify-content: center;
 }
 
 .toolbar {
+    flex: 0 1 220px;
     display: flex;
     flex-direction: column;
-    width: 100%;
+    align-items: flex-start;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 8px 32px rgba(60, 72, 83, 0.10);
+    padding: 1.3rem 1.2rem 1.6rem 1.2rem;
+    min-width: 190px;
+    margin-top: 0.5rem;
+    gap: 1.05rem;
+
+    button {
+        font-size: 1rem;
+        font-weight: 550;
+        color: #294686;
+        border-radius: 6px;
+        border: 1.5px solid #294686;
+        background: #f3f5fd;
+        padding: 0.5em 1em;
+        margin-bottom: .7rem;
+        transition: background .16s, color .16s;
+
+        &:hover,
+        &:focus {
+            background: #294686;
+            color: #fff;
+        }
+    }
+
+    div {
+        margin-bottom: .5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.55em;
+
+        input[type="radio"] {
+            accent-color: #294686;
+            margin-right: 0.28em;
+        }
+
+        i {
+            font-size: 0.98rem;
+            color: #50618f;
+            font-style: normal;
+        }
+    }
+
+    .slider-container {
+        width: 100%;
+        margin-top: 1.2rem;
+
+        label {
+            font-size: 1.07rem;
+            font-weight: 500;
+            color: #2d384b;
+        }
+
+        #angleSlider {
+            width: 100%;
+            margin-top: .5rem;
+            accent-color: #294686;
+            height: 3px;
+            background: #e7edfa;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        #angleDisplay {
+            margin-top: .3rem;
+            font-size: .96rem;
+            color: #197749;
+            text-align: right;
+            font-weight: 500;
+        }
+    }
+}
+
+.routeAttributes {
+    flex: 1 1 330px;
+    min-width: 260px;
+    max-width: 400px;
+    margin-top: 0.5rem;
+
+    form {
+        background: #fff;
+        padding: 2rem 1.7rem 1.7rem 1.7rem;
+        border-radius: 14px;
+        box-shadow: 0 8px 32px rgba(60, 72, 83, 0.12), 0 2.5px 6px rgba(32, 35, 39, 0.03);
+        display: flex;
+        flex-direction: column;
+        /* gap: 0.95rem; */
+
+        mat-form-field {
+            width: 100%;
+        }
+
+        button[type="submit"] {
+            margin-top: 0.8rem;
+            padding: 0.6em 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            color: #197749;
+            border-color: #197749;
+            transition: background 0.18s, color 0.18s;
+            min-width: 130px;
+
+            &:hover {
+                background: #197749;
+                color: #fff;
+            }
+        }
+    }
+}
+
+/* Responsive Style */
+@media (max-width: 1020px) {
+    .work-space {
+        flex-direction: column;
+        gap: 2rem;
+        align-items: stretch;
+    }
+
+    .wall-container,
+    .toolbar,
+    .routeAttributes {
+        max-width: 100%;
+        min-width: 0;
+        width: 100%;
+    }
+}
+
+@media (max-width: 610px) {
+    h1 {
+        font-size: 1.33rem;
+        margin-top: 1.3rem;
+    }
+
+    .work-space {
+        padding: 0 0.1rem;
+    }
+
+    .toolbar,
+    .routeAttributes form {
+        padding: 1.1rem 0.6rem 1.1rem 0.6rem;
+    }
+
+    .routeAttributes form {
+        gap: 0.55rem;
+    }
 }
