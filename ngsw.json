@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1765717181465,
+  "timestamp": 1765717343206,
   "index": "/endless-board-app/index.html",
   "assetGroups": [
     {
@@ -10,27 +10,7 @@
       "cacheQueryOptions": {
         "ignoreVary": true
       },
-      "urls": [
-        "/endless-board-app/chunk-32OXLRM3.js",
-        "/endless-board-app/chunk-576YX7J7.js",
-        "/endless-board-app/chunk-H5PX2EZB.js",
-        "/endless-board-app/chunk-JGCTVKLB.js",
-        "/endless-board-app/chunk-JY2YBEA6.js",
-        "/endless-board-app/chunk-KD6BBHMR.js",
-        "/endless-board-app/chunk-OBIH6XTA.js",
-        "/endless-board-app/chunk-RDQUUJ3O.js",
-        "/endless-board-app/chunk-TEEMTWA2.js",
-        "/endless-board-app/chunk-TEFXUT4K.js",
-        "/endless-board-app/chunk-UGDXDAOG.js",
-        "/endless-board-app/chunk-VNDCGUNK.js",
-        "/endless-board-app/chunk-XR4RKYJJ.js",
-        "/endless-board-app/favicon.ico",
-        "/endless-board-app/index.html",
-        "/endless-board-app/main-ZAFMI4BV.js",
-        "/endless-board-app/manifest.webmanifest",
-        "/endless-board-app/polyfills-FFHMD2TL.js",
-        "/endless-board-app/styles-36AW6TKX.css"
-      ],
+      "urls": [],
       "patterns": []
     },
     {
@@ -55,20 +35,6 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "/endless-board-app/chunk-32OXLRM3.js": "dfdd3b947f031678378e1e2fbae41fd38d821405",
-    "/endless-board-app/chunk-576YX7J7.js": "520c88c15244987865549cc8ecb479699375452a",
-    "/endless-board-app/chunk-H5PX2EZB.js": "a7d5c0366c94d0f33932450b338394b9286e4074",
-    "/endless-board-app/chunk-JGCTVKLB.js": "bd8278d742219625561a609b1ee33b9bbea3b574",
-    "/endless-board-app/chunk-JY2YBEA6.js": "6853fe29bf872d2ef3edd7c00c98ae5cf9617d30",
-    "/endless-board-app/chunk-KD6BBHMR.js": "5c4836e759ccbb1cfae51cb5a6f96b7ace8e491d",
-    "/endless-board-app/chunk-OBIH6XTA.js": "b08ca83ee1db9cde7e08d72041637c0d085b09cb",
-    "/endless-board-app/chunk-RDQUUJ3O.js": "eb2a436e224603cf642bd0308840a571fa6e36a5",
-    "/endless-board-app/chunk-TEEMTWA2.js": "d53f97c70f94cdbd766ce89a3b26dec955b55d3b",
-    "/endless-board-app/chunk-TEFXUT4K.js": "e0091fd8d567a9dfa82238ba7fc7c406950d6878",
-    "/endless-board-app/chunk-UGDXDAOG.js": "9dd06efd119417fb9ef5519ac73c3c44a444bea0",
-    "/endless-board-app/chunk-VNDCGUNK.js": "a48182734f81fe6f909d08de2a309125fde6f840",
-    "/endless-board-app/chunk-XR4RKYJJ.js": "1e81a32dd7ceacab1099bc3ad3a60fd42c6dae9a",
-    "/endless-board-app/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
     "/endless-board-app/icons/icon-128x128.png": "f912963bdc6d5a38d8f1dd0afbaab2ce8d657acb",
     "/endless-board-app/icons/icon-144x144.png": "b155fd5f2fd5d2ea7760721063003c4cd95fd783",
     "/endless-board-app/icons/icon-152x152.png": "eae6e0f0c8afb8aaae339e2a569b43e9238e5e6c",
@@ -76,12 +42,7 @@
     "/endless-board-app/icons/icon-384x384.png": "94a915751ef6c9282df9aea405ad679230631814",
     "/endless-board-app/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
     "/endless-board-app/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
-    "/endless-board-app/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
-    "/endless-board-app/index.html": "f4603941a1216ccc522f6e43999e4fae001b0ed5",
-    "/endless-board-app/main-ZAFMI4BV.js": "7550bdcc0fd99f36a5e94fd4749a1c231afa7707",
-    "/endless-board-app/manifest.webmanifest": "4dd83819109429d8ab03d2826cba2f3934adad1a",
-    "/endless-board-app/polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
-    "/endless-board-app/styles-36AW6TKX.css": "173fa74a40cd51f896da8df76e2a21ac7900097e"
+    "/endless-board-app/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95"
   },
   "navigationUrls": [
     {
