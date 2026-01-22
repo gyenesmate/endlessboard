@@ -11,6 +11,7 @@ import { routes } from './app.routes';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
   providers: [
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [AppComponent]
 })
