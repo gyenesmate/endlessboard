@@ -1,0 +1,37 @@
+.error-massage-container {
+    position: fixed; // important!
+    padding: 10px;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    width: fit-content;
+
+    border: solid 1px red;
+    border-radius: 5px;
+    background-color: #ffe5e5;
+    color: #b30000;
+    font-size: 14px;
+    text-align: center;
+
+    animation: bounceUp 0.6s ease-out forwards;
+}
+
+@keyframes bounceUp {
+    0% {
+        transform: translate(-50%, 100%);
+        opacity: 0;
+    }
+
+    60% {
+        transform: translate(-50%, -60%);
+        opacity: 1;
+    }
+
+    80% {
+        transform: translate(-50%, -45%);
+    }
+
+    100% {
+        transform: translate(-50%, -50%);
+    }
+}

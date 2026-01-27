@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, Input, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { UserManagmentService } from '../../services/user-managment.service';
 import { Router } from '@angular/router';
+
+import { UserManagmentService } from '../../services/user-managment.service';
+import { ErrorMassageComponent } from '../../shared/error-massage/error-massage/error-massage.component';
+
 
 @Component({
   selector: 'app-login-page',
@@ -12,13 +15,14 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss'
 })
 export class LoginPageComponent {
   public readonly userLoginForm: FormGroup;
+  @ViewChild('dynamicErrorHost', { read: ViewContainerRef }) container!: ViewContainerRef;
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -27,8 +31,8 @@ export class LoginPageComponent {
   ) {
     this.userLoginForm = this.formBuilder.group({
       userEmail: ["", [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@gmail\.com$/)]],
-      userPassword: ["", Validators.required]
-    })
+      userPassword: ["", [Validators.required, Validators.minLength(6)]]
+    });
   }
 
   public async loginUser() {
@@ -36,11 +40,16 @@ export class LoginPageComponent {
       if (await this.userManagment.login(this.userLoginForm.value["userEmail"], this.userLoginForm.value["userPassword"])) {
         this.router.navigateByUrl("/main");
       } else {
-        alert("Email or Password is wrong!");
-      }
-      //this.userManagment.indexDBaddUser(this.userLoginForm.value["userName"], "example3@gmail.com");
-      //this.userManagment.indexDBfetchUsers();
-      
+        this.showErrorMessage("Login failed. Please check your email and password.");
+      }    
+    } else {
+      this.showErrorMessage("Please enter a valid email and password (min. 6 characters).");
     }
+  }
+
+  private showErrorMessage(message: string): void {
+    this.container.clear();
+    const errorComponentRef = this.container.createComponent(ErrorMassageComponent);
+    errorComponentRef.instance.message = message;
   }
 }

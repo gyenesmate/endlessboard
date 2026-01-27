@@ -6,7 +6,7 @@ $primary-light: #f3f5fd;
 $active-bg: #d3e1fd;
 $active-text: $primary;
 $text-main: #2d384b;
-$navbar-bg: #f7f9fc;
+$navbar-bg: #f7f9fcf5;
 $logout-color: #be2411;
 $logout-bg: #ffebeb;
 $navbar-text-bg: #e7ebf7;
@@ -33,7 +33,9 @@ $navbar-text-bg: #e7ebf7;
 // === Navbar Styles ===
 .navbar {
     background: $navbar-bg !important;
-    box-shadow: 0 1.5px 16px rgba(41, 70, 134, 0.07);
+    box-shadow: 0 1.5px 16px rgba(41, 70, 134, 0.35);
+    border: rgba(41, 70, 134, 0.07) 0.1px solid;
+    border-radius: 0 0 20px 20px;
 
     .container-fluid {
         max-width: 1300px;
@@ -114,7 +116,7 @@ $navbar-text-bg: #e7ebf7;
     justify-content: center !important;
 }
 
-@media (max-width: 991.98px) {
+@media (max-width: 1200px) {
     .navbar-collapse>.w-100 {
         flex-direction: column !important;
         align-items: stretch !important;

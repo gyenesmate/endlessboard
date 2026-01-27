@@ -10,7 +10,8 @@
             <div class="route-card" *ngFor="let r of routes; trackBy: trackById">
                 <p>{{ r.title }}</p>
                 <p>{{ r.description }}</p>
-                <p>{{ r.userEmail }}</p>
+                <p>Made by: {{ r.userEmail }}</p>
+                <p>Grade: {{ r.grade }}</p>
                 <p>Route Likes: {{ r.likes }}</p>
                 <ng-container *ngIf="userEmail !== null; else notLoggedIn">
                     <button (click)="toggleLikeRoute(r)" [disabled]="r.userEmail === userEmail">

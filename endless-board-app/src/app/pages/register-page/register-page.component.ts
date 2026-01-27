@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef  } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { UserManagmentService } from '../../services/user-managment.service';
 import { Router } from '@angular/router';
+
+import { UserManagmentService } from '../../services/user-managment.service';
+import { ErrorMassageComponent } from '../../shared/error-massage/error-massage/error-massage.component';
 
 @Component({
   selector: 'app-register-page',
@@ -19,6 +21,7 @@ import { Router } from '@angular/router';
 })
 export class RegisterPageComponent {
   public readonly userRegisterForm: FormGroup;
+  @ViewChild('dynamicErrorHost', { read: ViewContainerRef }) container!: ViewContainerRef;
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -41,8 +44,16 @@ export class RegisterPageComponent {
       )) {
         this.router.navigateByUrl("/main");
       } else {
-        alert("Something is wrong!");
+        this.showErrorMessage("Registration failed. Please try again.");
       }
+    } else {
+      this.showErrorMessage("Please fill all the fields with valid data.");
     }
+  }
+
+  private showErrorMessage(message: string): void {
+    this.container.clear();
+    const errorComponentRef = this.container.createComponent(ErrorMassageComponent);
+    errorComponentRef.instance.message = message;
   }
 }

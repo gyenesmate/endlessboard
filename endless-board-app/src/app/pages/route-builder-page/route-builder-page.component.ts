@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, ViewChild, ViewContainerRef } from '@angular/core';
 import { ClimbingWallComponent } from '../../shared/climbing-wall/climbing-wall.component';
 import { Wall } from '../../shared/wall';
 import * as THREE from 'three';
@@ -9,6 +9,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
+
+import { ErrorMassageComponent } from '../../shared/error-massage/error-massage/error-massage.component';
 
 @Component({
   selector: 'app-route-builder-page',
@@ -26,6 +28,7 @@ import { Router } from '@angular/router';
 export class RouteBuilderPageComponent {
 
   public readonly routeCreatingForm: FormGroup;
+  @ViewChild('dynamicErrorHost', { read: ViewContainerRef }) container!: ViewContainerRef;
 
   private holdStateDict: Map<string, number>;
   private holdStateMap: Map<THREE.Mesh, string> = new Map();  
@@ -192,11 +195,11 @@ export class RouteBuilderPageComponent {
         if (routeDocID) {
           this.router.navigateByUrl("/main");
         } else {
-          console.warn("Route couldt be added");
+          this.showErrorMessage("Failed to save the route. Please try again.");
         }
       });  
     } else {
-      alert("Something is wrong");
+      this.showErrorMessage("Please fill in all route details before saving.");
     }
   }
 
@@ -207,5 +210,11 @@ export class RouteBuilderPageComponent {
       }  
     }  
     return "default-hold"; // fallback if no match found  
-  }  
+  } 
+  
+  private showErrorMessage(message: string): void {
+    this.container.clear();
+    const errorComponentRef = this.container.createComponent(ErrorMassageComponent);
+    errorComponentRef.instance.message = message;
+  }
 }

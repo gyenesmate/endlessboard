@@ -8,7 +8,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "ng build --configuration production --base-href /endless-board-app/ && gh-pages -d dist/endless-board-app/browser"
+    "deploy": "ng build --configuration production --base-href /endlessboard/ && gh-pages -d dist/endless-board-app/browser",
+    "cleanDeploy": "gh-pages --clean -d dist/endless-board-app"
   },
   "private": true,
   "dependencies": {
