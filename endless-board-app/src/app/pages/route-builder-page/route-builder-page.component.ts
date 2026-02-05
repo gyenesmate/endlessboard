@@ -4,7 +4,7 @@ import { Wall } from '../../shared/wall';
 import * as THREE from 'three';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouteManagmentService } from '../../services/route-managment.service';
+import { RouteManagementService } from '../../services/route-management.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -49,7 +49,7 @@ export class RouteBuilderPageComponent {
 
   constructor(
     private readonly formBuilder: FormBuilder,
-    private routeManagmentService: RouteManagmentService,
+    private routeManagementService: RouteManagementService,
     private readonly router: Router
   ) {
 
@@ -186,7 +186,7 @@ export class RouteBuilderPageComponent {
         };  
       });  
 
-      this.routeManagmentService.createRouteInDB(  
+      this.routeManagementService.createRouteInDB(  
         this.routeCreatingForm.value["routeTitle"],  
         this.routeCreatingForm.value["routeDescription"],  
         this.routeCreatingForm.value["routeGrade"],   

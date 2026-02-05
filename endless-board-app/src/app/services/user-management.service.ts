@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class UserManagmentService {
+export class UserManagementService {
   private user!: User;
   
   constructor(

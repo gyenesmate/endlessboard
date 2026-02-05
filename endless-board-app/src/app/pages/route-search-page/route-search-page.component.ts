@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { ClimbingWallComponent } from '../../shared/climbing-wall/climbing-wall.component';
 import { Wall } from '../../shared/wall';
-import { RouteManagmentService } from '../../services/route-managment.service';
+import { RouteManagementService } from '../../services/route-management.service';
 import { Route } from '../../shared/route';
-import { UserManagmentService } from '../../services/user-managment.service';
+import { UserManagementService } from '../../services/user-management.service';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { combineLatest, Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -39,8 +39,8 @@ export class RouteSearchPageComponent {
   private holdStateDict: Map<string, number>;
 
   constructor(
-    private routeManagmentService: RouteManagmentService,
-    private userManagmentService: UserManagmentService
+    private routeManagementService: RouteManagementService,
+    private userManagementService: UserManagementService
   ) {
     this.holdStateDict = new Map ([
       ["start-hold", 0xff0000],
@@ -50,7 +50,7 @@ export class RouteSearchPageComponent {
       ["select-hold", 0x0000FF]
     ]);
 
-    if (userManagmentService.isLoggedIn()) {
+    if (userManagementService.isLoggedIn()) {
       this.userEmail = localStorage.getItem("userEmail");
       this.userName = localStorage.getItem("userName");
     } else {
@@ -62,7 +62,7 @@ export class RouteSearchPageComponent {
   }
 
   async ngOnInit() {
-    this.routes$ = this.routeManagmentService.getAllRoutesObs();
+    this.routes$ = this.routeManagementService.getAllRoutesObs();
 
     const title$ = this.titleFilter.valueChanges.pipe(startWith(''), debounceTime(200), distinctUntilChanged());
     const grade$ = this.gradeFilter.valueChanges.pipe(startWith(''), debounceTime(200), distinctUntilChanged());
@@ -83,12 +83,12 @@ export class RouteSearchPageComponent {
 
   public async toggleLikeRoute(r: Route): Promise<void> {
     if (this.userEmail) {      
-      await this.routeManagmentService.toggleLikeRoute(r, this.userEmail);
+      await this.routeManagementService.toggleLikeRoute(r, this.userEmail);
     }
   }
 
   async syncPendingLikes() {
-    await this.routeManagmentService.syncPendingLikes(this.routes$);
+    await this.routeManagementService.syncPendingLikes(this.routes$);
   }
 
   /* TODO: implement the like button changes when offline */
@@ -100,7 +100,7 @@ export class RouteSearchPageComponent {
   }
 
   async getUserNameByEmail(userEmail: string): Promise<string> {
-    const userName = await this.userManagmentService.readUserNameByEmail(userEmail);
+    const userName = await this.userManagementService.readUserNameByEmail(userEmail);
     return userName || userEmail;
   }
 

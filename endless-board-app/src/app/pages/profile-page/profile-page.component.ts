@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UserManagmentService } from '../../services/user-managment.service';
+import { UserManagementService } from '../../services/user-management.service';
 import { Router } from '@angular/router';
 import { Route } from '../../shared/route';
-import { RouteManagmentService } from '../../services/route-managment.service';
+import { RouteManagementService } from '../../services/route-management.service';
 import { ClimbingWallComponent } from '../../shared/climbing-wall/climbing-wall.component';
 import { Wall } from '../../shared/wall';
 import { Observable } from 'rxjs';
@@ -31,8 +31,8 @@ export class ProfilePageComponent implements OnInit {
   private holdStateDict: Map<string, number>;
 
   constructor(
-    private userManagmentService: UserManagmentService,
-    private routeManagmentService: RouteManagmentService,
+    private userManagementService: UserManagementService,
+    private routeManagementService: RouteManagementService,
     private readonly router: Router
   ) {
     this.userEmail = localStorage.getItem("userEmail");
@@ -50,9 +50,9 @@ export class ProfilePageComponent implements OnInit {
   async ngOnInit() {
     this.userEmail = localStorage.getItem('userEmail');
     if (this.userEmail) {
-      const userDocId = await this.userManagmentService.getUserDocIdByEmail(this.userEmail);
+      const userDocId = await this.userManagementService.getUserDocIdByEmail(this.userEmail);
       if (userDocId) {
-        this.routes$ = this.routeManagmentService.getRoutesByUserDocIdObs(userDocId);
+        this.routes$ = this.routeManagementService.getRoutesByUserDocIdObs(userDocId);
       }
     }
   }
@@ -73,7 +73,7 @@ export class ProfilePageComponent implements OnInit {
 
   public async userNameChange(newName: string): Promise<void> {
     if (this.userEmail !== null) {
-      await this.userManagmentService.updateUserNameByEmail(this.userEmail, newName).then(() => {
+      await this.userManagementService.updateUserNameByEmail(this.userEmail, newName).then(() => {
         this.userEmail = newName;
         localStorage.setItem("authToken", newName);
         this.router.navigateByUrl("/main");
@@ -84,7 +84,7 @@ export class ProfilePageComponent implements OnInit {
 
   public async deleteRoute(routeID: string): Promise<void> {
     if (this.userEmail) {
-      await this.routeManagmentService.deleteRouteByEmailAndRouteId(this.userEmail, routeID);
+      await this.routeManagementService.deleteRouteByEmailAndRouteId(this.userEmail, routeID);
       alert("Route has been deleted!");
     }
   }

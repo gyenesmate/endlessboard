@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 
-import { UserManagmentService } from '../../services/user-managment.service';
+import { UserManagementService } from '../../services/user-management.service';
 import { ErrorMessageComponent } from '../../shared/error-message/error-message.component';
 
 @Component({
@@ -25,19 +25,19 @@ export class RegisterPageComponent {
 
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly userManagment: UserManagmentService,
+    private readonly userManagement: UserManagementService,
     private readonly router: Router
   ) {
     this.userRegisterForm = this.formBuilder.group({
       userName: ["", Validators.required],
       userEmail: ["", [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@gmail\.com$/)]],
-      userPassword: ["", Validators.required]
+      userPassword: ["", [Validators.required, Validators.minLength(6)]]
     })
   }
 
   public async registerUser() {
     if (this.userRegisterForm.valid) {
-      if (await this.userManagment.register(
+      if (await this.userManagement.register(
         this.userRegisterForm.value["userEmail"], 
         this.userRegisterForm.value["userPassword"],
         this.userRegisterForm.value["userName"]
@@ -47,7 +47,7 @@ export class RegisterPageComponent {
         this.showErrorMessage("Registration failed. Please try again.");
       }
     } else {
-      this.showErrorMessage("Please fill all the fields with valid data.");
+      this.showErrorMessage("Please fill all the fields with valid data. Password must be at least 6 characters long.");
     }
   }
 

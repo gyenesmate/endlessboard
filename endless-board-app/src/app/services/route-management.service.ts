@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../shared/user';
-import { UserManagmentService } from './user-managment.service';
+import { UserManagementService } from './user-management.service';
 import { addDoc, arrayRemove, arrayUnion, collection, collectionData, collectionGroup, CollectionReference, deleteDoc, doc, Firestore, getDocs, onSnapshot, query, updateDoc, where } from '@angular/fire/firestore';
 import { Route } from '../shared/route';
 import { combineLatest, map, Observable, take } from 'rxjs';
@@ -10,13 +10,13 @@ import { IndexedDBService } from './indexeddb.service';
 @Injectable({
   providedIn: 'root'
 })
-export class RouteManagmentService {
+export class RouteManagementService {
 
   private user?: User;
   private userEmail!: string; 
 
   constructor(
-    private userManagmentService: UserManagmentService,
+    private userManagementService: UserManagementService,
     private firestore: Firestore,
     private dbService: IndexedDBService
   ) {
@@ -64,7 +64,7 @@ export class RouteManagmentService {
     grade: string,   
     holds: any[] 
   ): Promise<string | null> {  
-    if (this.userManagmentService.isLoggedIn()) {  
+    if (this.userManagementService.isLoggedIn()) {  
       const userEmail = localStorage.getItem("userEmail");  
       if (userEmail) {  
         this.userEmail = userEmail;  
@@ -135,7 +135,7 @@ export class RouteManagmentService {
 
   async toggleLikeRoute(route: Route, currentUserEmail: string): Promise<void> {
     if (navigator.onLine) {
-      const userDocId = await this.userManagmentService.getUserDocIdByEmail(route.userEmail);
+      const userDocId = await this.userManagementService.getUserDocIdByEmail(route.userEmail);
       
       if (!route.id || !userDocId) return;
       const routeDocRef = doc(this.firestore, `users/${userDocId}/routes/${route.id}`);

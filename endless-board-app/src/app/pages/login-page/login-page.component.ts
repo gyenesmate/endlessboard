@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 
-import { UserManagmentService } from '../../services/user-managment.service';
+import { UserManagementService } from '../../services/user-management.service';
 import { ErrorMessageComponent } from '../../shared/error-message/error-message.component';
 
 
@@ -26,7 +26,7 @@ export class LoginPageComponent {
 
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly userManagment: UserManagmentService,
+    private readonly userManagement: UserManagementService,
     private readonly router: Router
   ) {
     this.userLoginForm = this.formBuilder.group({
@@ -37,7 +37,7 @@ export class LoginPageComponent {
 
   public async loginUser() {
     if (this.userLoginForm.valid) {
-      if (await this.userManagment.login(this.userLoginForm.value["userEmail"], this.userLoginForm.value["userPassword"])) {
+      if (await this.userManagement.login(this.userLoginForm.value["userEmail"], this.userLoginForm.value["userPassword"])) {
         this.router.navigateByUrl("/main");
       } else {
         this.showErrorMessage("Login failed. Please check your email and password.");

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { UserManagmentService } from '../../services/user-managment.service';
+import { UserManagementService } from '../../services/user-management.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -17,7 +17,7 @@ export class NavBarComponent {
 
   constructor (
     private readonly authService: AuthService,
-    private userManagment: UserManagmentService,
+    private userManagement: UserManagementService,
   ) {}
 
   public isLoggedIn() {
@@ -29,7 +29,7 @@ export class NavBarComponent {
   }
 
   public logoutUser() {
-    this.userManagment.logout();
+    this.userManagement.logout();
   }
 
   public getAuthToken() {

@@ -1,12 +1,12 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { UserManagmentService } from '../../services/user-managment.service';
+import { UserManagementService } from '../../services/user-management.service';
 
 export const loginPageGuard: CanActivateFn = (route, state) => {
-  const userManagmentService = inject(UserManagmentService);
+  const userManagementService = inject(UserManagementService);
   const router = inject(Router);
   
-  if (userManagmentService.isLoggedIn()) {
+  if (userManagementService.isLoggedIn()) {
     router.navigateByUrl("/main");
     return false;
   }  
