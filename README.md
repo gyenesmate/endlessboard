@@ -34,7 +34,7 @@ EndlessBoard is a Progressive Web App (PWA) for creating, sharing, and searching
 
 3. Start the development server:
    ```sh
-   npm start
+   npm run dev
    ```
    Open [http://localhost:4200/](http://localhost:4200/) in your browser.
 
