@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-error-massage',
+  selector: 'app-error-message',
   imports: [],
-  templateUrl: './error-massage.component.html',
-  styleUrl: './error-massage.component.scss'
+  templateUrl: './error-message.component.html',
+  styleUrl: './error-message.component.scss'
 })
-export class ErrorMassageComponent {
+export class ErrorMessageComponent {
   public errorMessage: string = '';
 
   @Input() set message(value: string) {

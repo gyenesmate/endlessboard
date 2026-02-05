@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 
-import { ErrorMassageComponent } from '../../shared/error-massage/error-massage/error-massage.component';
+import { ErrorMessageComponent } from '../../shared/error-message/error-message.component';
 
 @Component({
   selector: 'app-route-builder-page',
@@ -214,7 +214,7 @@ export class RouteBuilderPageComponent {
   
   private showErrorMessage(message: string): void {
     this.container.clear();
-    const errorComponentRef = this.container.createComponent(ErrorMassageComponent);
+    const errorComponentRef = this.container.createComponent(ErrorMessageComponent);
     errorComponentRef.instance.message = message;
   }
 }
